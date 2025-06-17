@@ -11,6 +11,11 @@ import { getUserDetails, login, logout, signup } from "../controllers/users/user
 export function mapUrls(app: express.Express) {
 	const msV1APIRouter = express.Router();
 
+	// status
+	app.get("/", (req, res) => {
+		res.status(200).json({ status: "OK" });
+	});
+
 	app.use("/api/v1", msV1APIRouter);
 
 	// User-related routes (unchanged)
