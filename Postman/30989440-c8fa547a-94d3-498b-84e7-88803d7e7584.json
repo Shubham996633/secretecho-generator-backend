@@ -392,7 +392,8 @@
 					"response": []
 				}
 			],
-			"id": "30989440-ea691fd9-8ad8-458d-bed2-2053105e3d5d"
+			"id": "30989440-ea691fd9-8ad8-458d-bed2-2053105e3d5d",
+			"description": "**Plugin Generator Rest APIs** folder Contains all api that are involved in plugin generation handles with base url as  \n`/plugin`\n\nIt Contains :\n\n- Create Plugin Generator\n    \n- Get Chat history of plugin\n    \n- Save the final generated plugin\n    \n\n<u><i>API need bearer token</i></u>"
 		}
 	],
 	"variable": [
