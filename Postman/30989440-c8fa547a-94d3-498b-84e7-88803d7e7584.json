@@ -399,7 +399,7 @@
 			"name": "Plugin Websocket",
 			"item": [],
 			"id": "30989440-27cf6fc8-2dfa-4e23-b5ad-3c5bbcbd70f0",
-			"description": "Plugin websocket would be Websocket connection with base url as"
+			"description": "Plugin websocket would be Websocket connection with base url as\n\n```\nws://localhost:3000/plugin_generator?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NzcndoamMxcjcyMHk1Z2Fua3cwZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgzODMsImV4cCI6MTc1MTkxNDg2MTMwNiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.Syxy1SdVEoa8lXLOiHDX5JtHMWHlYQ-dmSMj3QauGzM&plugin_id=plg_01jxwdmbkj2wwdbb4f66gfy72h\n\n ```"
 		}
 	],
 	"variable": [
