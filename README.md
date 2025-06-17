@@ -14,6 +14,7 @@ The backend exposes REST endpoints for user management and plugin generator oper
 - **Plugin Generation:** Generate and save WooCommerce plugins as PHP code.
 - **MongoDB Storage:** Persist user data and plugin generator sessions.
 - **Redis Caching:** Improve performance with Redis Cloud for caching.
+- **Rate Limiting:** Improve performance with rate limiting to prevent continous api call.
 - **Gemini API Integration:** Leverage AI for generating plugin code.
 
 ## Prerequisites
