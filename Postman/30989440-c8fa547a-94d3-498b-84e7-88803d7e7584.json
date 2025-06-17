@@ -249,12 +249,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/plugin/plugin-generator/chat-history?plugin_id={{pluginId}}",
-							"protocol": "http",
+							"raw": "https://secretecho-generator-backend-production.up.railway.app/api/v1/plugin/plugin-generator/chat-history?plugin_id={{pluginId}}",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"secretecho-generator-backend-production",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
@@ -302,12 +304,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/v1/plugin/plugin-generator/save-plugin",
-							"protocol": "http",
+							"raw": "https://secretecho-generator-backend-production.up.railway.app/api/v1/plugin/plugin-generator/save-plugin",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"secretecho-generator-backend-production",
+								"up",
+								"railway",
+								"app"
 							],
-							"port": "3000",
 							"path": [
 								"api",
 								"v1",
