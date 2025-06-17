@@ -2,9 +2,24 @@
 
 ## Overview
 
-Secret Echo is the backend service for the WooCommerce Plugin Generator, a web application that allows users to generate custom WooCommerce plugins using AI. This backend handles user authentication, plugin generator session management, real-time chat for plugin generation, and storage of generated plugins. It is built using Node.js with Express for RESTful APIs, WebSocket for real-time communication, MongoDB for data storage, Redis for caching, and integrates with the Gemini API for AI-powered plugin generation.
+Secret Echo's backend service for the WooCommerce Plugin Generator, a web application that allows users to generate custom WooCommerce plugins using AI. This backend handles user authentication, plugin generator session management, real-time chat for plugin generation, and storage of generated plugins. It is built using Node.js with Express for RESTful APIs, WebSocket for real-time communication, MongoDB for data storage, Redis for caching, and integrates with the Gemini API for AI-powered plugin generation.
 
 The backend exposes REST endpoints for user management and plugin generator operations, as well as WebSocket routes for real-time chat during plugin generation.
+
+## Documentary Video
+
+To learn more about SecretEcho Plugin Generator App and see a walkthrough of its features, watch documentary video:
+
+### Watch the SecretEcho Plugin Generator Documentary Video
+
+[![alt text](https://github.com/user-attachments/assets/42ff8910-f42d-4d37-9457-c2b769fcde8f)](https://www.youtube.com/watch?v=pgkpgvwFMKg)
+
+## Deployed on Railway ( Frontend )  :  [SecretEcho Plugin Generator Frontend](https://secretecho-generator-frontend-production.up.railway.app/)
+
+## Deployed on Railway ( Backend )  :  [SecretEcho Plugin Generator Backend](https://secretecho-generator-backend-production.up.railway.app/)
+
+
+## APIs Postman Collection :  [Postman Collection of SecretEcho Plugin Generator Backend](https://github.com/Shubham996633/secretecho-generator-backend/blob/master/Postman/30989440-c8fa547a-94d3-498b-84e7-88803d7e7584.json)
 
 ## Features
 
