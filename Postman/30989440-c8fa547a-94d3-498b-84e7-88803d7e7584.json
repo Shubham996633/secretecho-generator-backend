@@ -398,7 +398,8 @@
 		{
 			"name": "Plugin Websocket",
 			"item": [],
-			"id": "30989440-27cf6fc8-2dfa-4e23-b5ad-3c5bbcbd70f0"
+			"id": "30989440-27cf6fc8-2dfa-4e23-b5ad-3c5bbcbd70f0",
+			"description": "Plugin websocket would be Websocket connection with base url as"
 		}
 	],
 	"variable": [
