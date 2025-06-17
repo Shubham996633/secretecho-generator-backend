@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "30989440-c8fa547a-94d3-498b-84e7-88803d7e7584",
+		"name": "SecretEcho-Backend-Generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Logout User",
+					"id": "30989440-4ece5a3c-c5bb-4720-b43a-c90ad1fc68c9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NqZWp6eThrMTU2djc5dDhleXI0ZCIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgxNDMsImV4cCI6MTc1MTkxNDYyMTE1MiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.a1mSXAgW2YFo2TuBNoaCXQEGzWXLfMzYOjr5U1TQcj4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup User",
+					"id": "30989440-e568fb71-f4ed-4e0a-8911-cbe28842772e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"secretEchotest@test.com\",\r\n    \"password\": \"SecretEcho\",\r\n    \"first_name\": \"Secret\",\r\n    \"last_name\": \"Echo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin User",
+					"id": "30989440-96749dde-0168-4a23-8e96-2f6cd410d4af",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"secretEchotest@test.com\",\r\n    \"password\": \"SecretEcho\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "30989440-b9c5c204-1720-42a3-a11c-6651da1f2d42",
+			"description": "**Authentication folder** contains all api that are involved in **authentication** section with\n\nbase url with\n\n`api/v1/auth/`\n\nIt Contains :\n\n- Signup API\n    \n- SignIn API\n    \n- Logout API\n    \n\n<u><i>Logout API need bearer token</i></u>"
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Me",
+					"id": "30989440-6e7533c1-cab7-4dfd-875f-d8531d011b38",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NzcndoamMxcjcyMHk1Z2Fua3cwZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgzODMsImV4cCI6MTc1MTkxNDg2MTMwNiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.Syxy1SdVEoa8lXLOiHDX5JtHMWHlYQ-dmSMj3QauGzM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "30989440-540492c5-0d22-47f9-b73b-f298754fb244",
+			"description": "**Users** folder Contains all api that are involved in **Users** Info with base url as  \n`/users`\n\nIt Contains :\n\n- Get ME API\n    \n\n<u><i>API need bearer token</i></u>"
+		},
+		{
+			"name": "Plugin Generator Rest APIs",
+			"item": [
+				{
+					"name": "Create Plugin Generator",
+					"id": "30989440-648a1c2a-dd4d-4f1c-af7c-793b917664ca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4eDMwMmFmYzZiMDY4bW43d2RtdzljZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAxMDE2NTgsImV4cCI6MTc1MTkzODE1OTM1MCwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.iQzHs-vHieQ6R6nFFV8-iQXvcCoc53BbQ5lm9dNOXfUs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pluginName\": \"Button Cart Plugin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/plugin/plugin-generator",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"plugin",
+								"plugin-generator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chat History of Plugin",
+					"id": "30989440-5dee48ea-2795-4077-a432-3d52516ac50a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NzcndoamMxcjcyMHk1Z2Fua3cwZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgzODMsImV4cCI6MTc1MTkxNDg2MTMwNiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.Syxy1SdVEoa8lXLOiHDX5JtHMWHlYQ-dmSMj3QauGzM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pluginName\": \"Button Cart Plugin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/plugin/plugin-generator/chat-history?plugin_id={{pluginId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"plugin",
+								"plugin-generator",
+								"chat-history"
+							],
+							"query": [
+								{
+									"key": "plugin_id",
+									"value": "{{pluginId}}",
+									"description": "Plugin ID to get chats history"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save the Final Generated Plugin Code",
+					"id": "30989440-d5fde258-b824-4c92-8d1d-d6a3d37aa73b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NzcndoamMxcjcyMHk1Z2Fua3cwZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgzODMsImV4cCI6MTc1MTkxNDg2MTMwNiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.Syxy1SdVEoa8lXLOiHDX5JtHMWHlYQ-dmSMj3QauGzM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pluginId\": \"plg_01jxwd7t15mrs6ndk62bzm79p0\",\r\n  \"generatedPlugin\": \"<?php\\n/**\\n * Plugin Name: Button Color Plugin\\n * Description: Changes the button color to blue\\n * Version: 1.0.0\\n */\\nif (!defined('ABSPATH')) exit;\\nadd_action('wp_head', 'change_button_color');\\nfunction change_button_color() {\\n    echo '<style>.button { background-color: blue !important; }</style>';\\n}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/plugin/plugin-generator/save-plugin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"plugin",
+								"plugin-generator",
+								"save-plugin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manually save a message",
+					"id": "30989440-813dcac3-7043-4a96-9410-57d485457855",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NzcndoamMxcjcyMHk1Z2Fua3cwZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgzODMsImV4cCI6MTc1MTkxNDg2MTMwNiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.Syxy1SdVEoa8lXLOiHDX5JtHMWHlYQ-dmSMj3QauGzM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pluginId\": \"plg_01jxwd7t15mrs6ndk62bzm79p0\",\r\n  \"content\": \"Change the button color to blue\",\r\n  \"sender\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/plugin/plugin-generator/message",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"plugin",
+								"plugin-generator",
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List All Plugin Generator of User",
+					"id": "30989440-36461d45-7b02-45f1-a2eb-e6b1a4208f29",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNyXzAxanh3Y2g4ZDMwZzRmYXExajJkZGozbW1rIiwic2Vzc2lvbl9pZCI6InNlc18wMWp4d2NzcndoamMxcjcyMHk1Z2Fua3cwZiIsImF1ZGllbmNlIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8iLCJpYXQiOjE3NTAwNzgzODMsImV4cCI6MTc1MTkxNDg2MTMwNiwiYXVkIjoic2VjcmV0RWNoby5jb21wYW5pb24uaW8ifQ.Syxy1SdVEoa8lXLOiHDX5JtHMWHlYQ-dmSMj3QauGzM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/plugin/plugin-generators",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"plugin",
+								"plugin-generators"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "30989440-ea691fd9-8ad8-458d-bed2-2053105e3d5d"
+		}
+	],
+	"variable": [
+		{
+			"key": "pluginId",
+			"value": "plg_01jxx3401q4789qq465tktp5g4",
+			"type": "default"
+		}
+	]
+}
