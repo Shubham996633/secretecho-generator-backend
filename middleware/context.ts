@@ -54,7 +54,7 @@ export async function SecretEchoContextMiddleware(req: Request, res: Response, n
 	SecretEchoContext.bind(req);
 
 	// Skip authentication for /signup and /login routes
-	const publicRoutes = ["/api/v1/auth/signup", "/api/v1/auth/login"];
+	const publicRoutes = ["/api/v1/auth/signup", "/api/v1/auth/login", "/"];
 	if (publicRoutes.includes(req.path)) {
 		return next();
 	}
@@ -106,7 +106,7 @@ export async function authorizeWebSocketConnection(ws: WebSocket, req: Request):
 
 		token = url.searchParams.get("token") || undefined;
 	}
-	console.log(token)
+	console.log(token);
 
 	if (!token) {
 		oplog.warn("WebSocket authorization failed: No token provided");
