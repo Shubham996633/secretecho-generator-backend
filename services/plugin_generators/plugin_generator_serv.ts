@@ -1,5 +1,5 @@
 import { SecretEchoContext } from "../../middleware/context";
-import { ChatMessage } from "../../models/plugin_generator";
+import { ChatHistoryResponse, ChatMessage } from "../../models/plugin_generator";
 import { getErrorMessage } from "../../oplog/error";
 import oplog from "../../oplog/oplog";
 
@@ -9,7 +9,6 @@ export async function createPluginGenerator(
 	userPid: string,
 	pluginName: string
 ): Promise<string | Error> {
-	// Return the generated pluginId
 	try {
 		const user = await secretEchoCtx.dbProviders.user.findByPid(secretEchoCtx, userPid);
 		if (user instanceof Error) {
@@ -21,15 +20,14 @@ export async function createPluginGenerator(
 			return new Error("User not found");
 		}
 
-		const userId = user._id.toString(); // Convert ObjectId to string
-
+		const userId = user._id.toString();
 		const result = await secretEchoCtx.dbProviders.PluginGenerator.create(secretEchoCtx, userId, pluginName);
 		if (result instanceof Error) {
 			oplog.error(getErrorMessage(result));
 			return result;
 		}
 
-		return result.pluginId; // Return the generated pluginId
+		return result.pluginId;
 	} catch (error) {
 		oplog.error(getErrorMessage(error));
 		return error as Error;
@@ -83,7 +81,7 @@ export async function getPluginGeneratorChatHistory(
 	secretEchoCtx: SecretEchoContext,
 	userPid: string,
 	pluginId: string
-): Promise<ChatMessage[] | Error> {
+): Promise<ChatHistoryResponse | Error> {
 	try {
 		const secretEchoUser = await secretEchoCtx.dbProviders.user.findByPid(secretEchoCtx, userPid);
 		if (secretEchoUser instanceof Error) {
@@ -105,7 +103,27 @@ export async function getPluginGeneratorChatHistory(
 			oplog.error(getErrorMessage(pluginGenerator));
 			return pluginGenerator;
 		}
-		return pluginGenerator ? pluginGenerator.chat : [];
+
+		const chat = pluginGenerator ? pluginGenerator.chat : [];
+
+		// Find the last code message (if any)
+		const codeMessages = chat.filter(
+			(message) => message.content.includes("<?php") || message.content.startsWith("```php")
+		);
+		const lastCodeMessage = codeMessages.length > 0 ? codeMessages[codeMessages.length - 1] : null;
+
+		// Clean up the last code message (remove ```php markers and fix newlines)
+		const lastCode = lastCodeMessage
+			? lastCodeMessage.content
+					.replace(/```php\n|```/g, "") // Remove ```php and ``` markers
+					.replace(/\\n/g, "\n") // Replace escaped newlines with actual newlines
+					.trim() // Remove leading/trailing whitespace
+			: null;
+
+		return {
+			chat,
+			lastCode,
+		};
 	} catch (error) {
 		oplog.error(getErrorMessage(error));
 		return error as Error;
@@ -152,7 +170,7 @@ export async function saveGeneratedPlugin(
 export async function listPluginGenerators(
 	secretEchoCtx: SecretEchoContext,
 	userPid: string
-): Promise<Array<{ pluginId: string; pluginName: string }> | Error> {
+): Promise<Array<{ pluginId: string; pluginName: string; isFinal: boolean }> | Error> {
 	try {
 		const secretEchoUser = await secretEchoCtx.dbProviders.user.findByPid(secretEchoCtx, userPid);
 		if (secretEchoUser instanceof Error) {
@@ -171,10 +189,11 @@ export async function listPluginGenerators(
 			return pluginGenerators;
 		}
 
-		// Return only pluginId and pluginName for the list
+		// Map the plugin generators to include pluginId, pluginName, and isFinal
 		return pluginGenerators.map((plugin) => ({
 			pluginId: plugin.pluginId,
 			pluginName: plugin.pluginName,
+			isFinal: !!plugin.generatedPlugin, // isFinal is true if generatedPlugin exists
 		}));
 	} catch (error) {
 		oplog.error(getErrorMessage(error));

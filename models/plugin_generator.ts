@@ -84,3 +84,8 @@ export const SaveGeneratedPluginRequestSchema = Joi.object<SaveGeneratedPluginRe
 export type SaveGeneratedPluginResponse = {
 	message: string;
 };
+
+export type ChatHistoryResponse = {
+	chat: ChatMessage[];
+	lastCode: string | null; // The most recent code message, if any
+};

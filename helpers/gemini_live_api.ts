@@ -248,19 +248,18 @@ export class PluginGeneratorService {
 					);
 					return;
 				}
-				oplog.info(`Chat history length: ${chatHistory.length}`);
-				if (chatHistory.length > 0) {
+				oplog.info(`Chat history length: ${chatHistory.chat.length}`);
+				if (chatHistory.chat.length > 0) {
 					const historyPrompt =
 						"This is the previous chat context, and if you don't tell user you know their history just keep it in mind and it will help you generating next response:\n";
 					const historyMessage = historyPrompt + JSON.stringify(chatHistory);
 					oplog.info(`Sending chat history to Gemini Live API: ${historyMessage}`);
 					this.send({ message: historyMessage }, false); // Don't save to database
 				} else {
-					// No chat history: Send a default greeting to initialize Gemini API
 					const defaultGreeting =
 						"Introduce yourself as a WooCommerce Plugin Generator and ask what functionality the user would like to add.";
 					oplog.info(`No chat history found, sending default greeting to Gemini Live API: ${defaultGreeting}`);
-					this.send({ message: defaultGreeting }, true, false); // Save to database, do NOT skip client response
+					this.send({ message: defaultGreeting }, true, false);
 					oplog.info("Default greeting sent to Gemini Live API");
 				}
 			} catch (error) {
@@ -285,8 +284,10 @@ export class PluginGeneratorService {
 
 				textParts.forEach((part) => {
 					if (part.text) {
-						this.responseBuffer.push(part.text);
-						oplog.info(`Buffering response part: ${part.text}`);
+						// Replace escaped newlines with actual newlines while buffering
+						const cleanedText = part.text.replace(/\\n/g, "\n");
+						this.responseBuffer.push(cleanedText);
+						oplog.info(`Buffering response part: ${cleanedText}`);
 					}
 				});
 			}
@@ -301,7 +302,9 @@ export class PluginGeneratorService {
 					const pluginCode = fullResponse.replace("FINAL_PLUGIN:", "").trim();
 					if (!validatePluginCode(pluginCode)) {
 						oplog.error("Generated plugin code failed validation");
-						this.clientWs.send(JSON.stringify({ error: "Generated plugin code is invalid or unsafe" }));
+						this.clientWs.send(
+							JSON.stringify({ type: "chat", response: "Generated plugin code is invalid or unsafe" })
+						);
 						this.send(
 							{
 								message:
@@ -321,63 +324,101 @@ export class PluginGeneratorService {
 							pluginCode
 						);
 						oplog.info(`Saved final plugin code for user ${this.userPID}, plugin ${this.pluginId}`);
-						this.clientWs.send(JSON.stringify({ response: pluginCode, isFinal: true }));
+						this.clientWs.send(JSON.stringify({ type: "code", response: pluginCode, isFinal: true }));
 					} catch (error) {
 						oplog.error(`Failed to save final plugin code: ${getErrorMessage(error)}`);
 						this.clientWs.send(
-							JSON.stringify({ error: `Failed to save final plugin code: ${getErrorMessage(error)}` })
+							JSON.stringify({ type: "chat", error: `Failed to save final plugin code: ${getErrorMessage(error)}` })
 						);
 					}
 					return;
 				}
 
-				// Handle initial response differently
-				if (!this.initialResponseReceived) {
-					const initialMessage = fullResponse;
-					oplog.info(`Sending initial response to client: ${initialMessage}`);
-					this.clientWs.send(JSON.stringify({ response: initialMessage }));
+				// Split the response into chat and code parts
+				const codeBlockRegex = /```php\n([\s\S]*?)\n```/;
+				const match = fullResponse.match(codeBlockRegex);
 
-					// Save initial response to database
+				if (match) {
+					// Code block found: Extract code and text parts
+					const codeContent = match[1].trim(); // Extract the code between ```php and ```
+					const textContent = fullResponse
+						.replace(codeBlockRegex, "") // Remove the code block
+						.trim(); // Remove any remaining whitespace
+
+					// Send the chat message (if any text exists outside the code block)
+					if (textContent) {
+						oplog.info(`Sending chat response to client: ${textContent}`);
+						this.clientWs.send(JSON.stringify({ type: "chat", response: textContent }));
+
+						// Save chat message to database
+						try {
+							await providersInterface.PluginGenerators.savePluginGeneratorMessage(
+								this.ctx,
+								this.userPID,
+								this.pluginId,
+								textContent,
+								"plugin_generator"
+							);
+							oplog.info(`Saved chat message for user ${this.userPID}, plugin ${this.pluginId}`);
+						} catch (error) {
+							oplog.error(`Failed to save chat message: ${getErrorMessage(error)}`);
+							this.clientWs.send(
+								JSON.stringify({ type: "chat", error: `Failed to save chat message: ${getErrorMessage(error)}` })
+							);
+						}
+					}
+
+					// Send the code response
+					oplog.info(`Sending code response to client: ${codeContent}`);
+					this.clientWs.send(JSON.stringify({ type: "code", response: codeContent, isFinal: false }));
+
+					// Save code message to database (optional, depending on your requirements)
 					try {
 						await providersInterface.PluginGenerators.savePluginGeneratorMessage(
 							this.ctx,
 							this.userPID,
 							this.pluginId,
-							initialMessage,
+							codeContent,
 							"plugin_generator"
 						);
-						oplog.info(`Saved initial plugin generator message for user ${this.userPID}, plugin ${this.pluginId}`);
+						oplog.info(`Saved code message for user ${this.userPID}, plugin ${this.pluginId}`);
 					} catch (error) {
-						oplog.error(`Failed to save initial plugin generator message: ${getErrorMessage(error)}`);
+						oplog.error(`Failed to save code message: ${getErrorMessage(error)}`);
 						this.clientWs.send(
-							JSON.stringify({ error: `Failed to save initial plugin generator message: ${getErrorMessage(error)}` })
+							JSON.stringify({ type: "chat", error: `Failed to save code message: ${getErrorMessage(error)}` })
 						);
 					}
+				} else {
+					// No code block: Treat the entire response as a chat message
+					const textContent = fullResponse.trim();
+					if (textContent) {
+						oplog.info(`Sending chat response to client: ${textContent}`);
+						this.clientWs.send(JSON.stringify({ type: "chat", response: textContent }));
 
+						// Save chat message to database
+						try {
+							await providersInterface.PluginGenerators.savePluginGeneratorMessage(
+								this.ctx,
+								this.userPID,
+								this.pluginId,
+								textContent,
+								"plugin_generator"
+							);
+							oplog.info(`Saved chat message for user ${this.userPID}, plugin ${this.pluginId}`);
+						} catch (error) {
+							oplog.error(`Failed to save chat message: ${getErrorMessage(error)}`);
+							this.clientWs.send(
+								JSON.stringify({ type: "chat", error: `Failed to save chat message: ${getErrorMessage(error)}` })
+							);
+						}
+					}
+				}
+
+				// Handle initial response flag
+				if (!this.initialResponseReceived) {
 					this.initialResponseReceived = true;
 					oplog.info("Initial response processed, processing pending messages");
 					this.processPendingMessages();
-				} else {
-					// Handle regular plugin generator responses
-					oplog.info(`Sending plugin generator response to client: ${fullResponse}`);
-					this.clientWs.send(JSON.stringify({ response: fullResponse }));
-
-					// Save response to database
-					try {
-						await providersInterface.PluginGenerators.savePluginGeneratorMessage(
-							this.ctx,
-							this.userPID,
-							this.pluginId,
-							fullResponse,
-							"plugin_generator"
-						);
-						oplog.info(`Saved plugin generator message for user ${this.userPID}, plugin ${this.pluginId}`);
-					} catch (error) {
-						oplog.error(`Failed to save plugin generator message: ${getErrorMessage(error)}`);
-						this.clientWs.send(
-							JSON.stringify({ error: `Failed to save plugin generator message: ${getErrorMessage(error)}` })
-						);
-					}
 				}
 			}
 		} else {
